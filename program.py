@@ -8,7 +8,7 @@ def main():
         text_file.close()
         print(text)
     else:
-        print("Give me a file to read!!!")
+        print("Give me a file to read!!!Version1")
 
 if __name__ == '__main__':
     main()
