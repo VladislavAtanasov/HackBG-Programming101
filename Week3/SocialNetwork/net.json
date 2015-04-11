@@ -1,0 +1,17 @@
+{
+    "Panda('Pesho','pesho@pandamail.com', 'male')": [], 
+    "Panda('vladislav','vladislav@pandamail.com', 'male')": [
+        "Panda('Ivo','ivo@pandamail.com', 'male')", 
+        "Panda('Tony','tony@pandamail.com', 'female')"
+    ], 
+    "Panda('Ivo','ivo@pandamail.com', 'male')": [
+        "Panda('vladislav','vladislav@pandamail.com', 'male')", 
+        "Panda('Gosho','gosho@pandamail.com', 'female')"
+    ], 
+    "Panda('Gosho','gosho@pandamail.com', 'female')": [
+        "Panda('Ivo','ivo@pandamail.com', 'male')"
+    ], 
+    "Panda('Tony','tony@pandamail.com', 'female')": [
+        "Panda('vladislav','vladislav@pandamail.com', 'male')"
+    ]
+}
