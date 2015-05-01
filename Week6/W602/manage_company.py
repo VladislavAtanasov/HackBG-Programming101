@@ -42,24 +42,3 @@ class Connect:
         for elem in ids:
             list_id.append(elem[0])
         return list_id
-
-def main():
-    pass
-    #comp = Connect("create_company.db")
-    #command = input("command> ")
-    #while command != "exit":
-    #    if command == "list_employees":
-    #        pass
-    #    elif command == "monthly_spending":
-    #        pass
-    #    elif command == "yearly_spending":
-    #        pass
-    #    elif command == "add_employee":
-    #        pass
-    #    elif command == "delete_employee <employee_id>":
-    #        pass
-    #    elif command == "update_employee <employee_id>":
-    #        pass
-
-if __name__ == '__main__':
-    main()
