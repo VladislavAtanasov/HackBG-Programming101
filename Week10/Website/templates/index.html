@@ -1,0 +1,32 @@
+<html>
+    <head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <style>
+    #cvqt {
+        background-color:blue;
+        color:white;
+    }
+    </style>
+    </head>
+    <body>
+        <h1><center>Movies & Projections!</center></h1>
+    {% for key, value in projections.items %}
+    <table class = "table table-condensed" border =0>
+        <tr>
+            <td id = "cvqt"><center><strong>{{ key.name }}</strong></center></td>
+            <tr>
+                <table class = "table table-condensed" border=2>
+                    {% for pr in value %}
+                    <tr>
+                        <td>{{pr.data}}</td>
+                        <td>{{pr.time}}</td>
+                        <td>{{pr.type}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </tr>
+        </tr>
+    </table>
+    {% endfor %}
+    </body>
+</html>
