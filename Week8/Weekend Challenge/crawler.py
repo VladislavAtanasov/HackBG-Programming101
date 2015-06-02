@@ -1,54 +1,73 @@
 import requests
 from bs4 import BeautifulSoup
-from pprint import pprint
+from settings import STARTING_PAGE
+from settings import JAVASCRIPT
+from settings import HASHTAG
+from settings import EXTERNAL_PART
+from settings import INTERNAL_PART
+from settings import SLASH
+from settings import SERVER_FIELD
 
 
 class Crawler:
-    def __init__(self, url):
-        self.url = url
-        self.internal_links = []
+
+    def __init__(self):
+        self.internal_links = [STARTING_PAGE]
         self.external_links = []
-        self.visited = []
 
-    def start(self):
-        links = self.get_links_in_url(self.url)
-        self.classify(links)
-        self.visited.append(self.url)
+    @staticmethod
+    def get_soup_of_url(url):
+        response = requests.get(url, timeout=2, allow_redirects=True)
+        soup = BeautifulSoup(response.text)
 
-        for link in self.internal_links:
-            print(link)
-            if link not in self.visited:
-                sub_pages = self.get_links_in_url(link)
-                self.classify(sub_pages)
+        return soup
 
-    def get_links_in_url(self, url):
-        try:
-            r = requests.get(url)
-            soup = BeautifulSoup(r.text)
-            link_list = set()
-            for link in soup.find_all('a'):
-                link_list.add(link.get('href'))
-            return link_list
-        except:
-            return "Invalid input"
+    @staticmethod
+    def get_links_from_soup(soup):
+        links = set()
 
-    def classify(self, links):
+        for link in soup.find_all('a'):
+            links.add(link.get('href'))
+
+        return links
+
+    def classify_internal_links(self, links):
         for link in links:
-            if link is None:
+            # Check for bad links
+            if link is None or JAVASCRIPT in link or link.startswith(HASHTAG):
                 continue
-            elif "start.bg" in link:
+
+            # Add internal urls
+            if INTERNAL_PART in link:
+                if not link.endswith(SLASH):
+                    link = link + SLASH
                 self.internal_links.append(link)
-            elif "link.php?" in link:
-                self.external_links.append(link)
-            else:
-                self.external_links.append(link)
+
+    def classify_external_links(self, links):
+        for link in links:
+            # Check for bad links
+            if link is None or JAVASCRIPT in link or link.startswith(HASHTAG):
+                continue
+
+            # Add external urls
+            if EXTERNAL_PART in link:
+                self.external_links.append(STARTING_PAGE + link)
+
+    @staticmethod
+    def get_server_header(link):
+        server_name = ""
+
+        try:
+            response = requests.head(link, timeout=3, allow_redirects=True)
+            if SERVER_FIELD in response.headers:
+                server_name = response.headers["Server"]
+        except requests.exceptions.RequestException:
+            pass
+
+        return server_name
+
+    def get_internal_links(self):
         return self.internal_links
 
-def main():
-    crawler = Crawler("http://www.start.bg/")
-    #print(crawler.get_links_in_url("http://www.start.bg/"))
-    #pprint(crawler.classify(crawler.get_links_in_url("http://www.start.bg/")))
-    print(crawler.start())
-
-if __name__ == '__main__':
-    main()
+    def get_external_links(self):
+        return self.external_links
